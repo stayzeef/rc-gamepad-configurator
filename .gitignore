@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# PyInstaller
+*.manifest
+*.spec.backup
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Application specific
+*.AppImage
+build/
+dist/
+logs/
+temp/
+
+# Firmware build artifacts (PlatformIO)
+firmware/.pio/
+firmware/.pioenvs/
+firmware/.piolibdeps/
+firmware/.vscode/settings.json
+firmware/.vscode/c_cpp_properties.json
+firmware/.vscode/launch.json
+firmware/.vscode/ipch/
+
+# Keep tools directory but ignore downloaded binaries
+tools/*.AppImage
+tools/*.tar.gz
+tools/*.zip
+tools/linuxdeploy*
+
+# Keep assets but ignore temporary files
+assets/*.tmp
+assets/*.backup
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.log
+
+# Internal documentation (not for public repo)
+GITHUB_PREPARATION.md
+PROJECT_SUMMARY.md
+docs/

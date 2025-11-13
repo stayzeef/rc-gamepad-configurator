@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=RC Gamepad Configurator
+Comment=Configure RC-to-USB joystick dongles
+Exec=rc-gamepad-configurator
+Icon=logo_512
+Type=Application
+Categories=Utility;Electronics;Engineering;
+Keywords=rc;joystick;gamepad;configurator;drone;flight;simulator;
+StartupNotify=true
+MimeType=application/json;
