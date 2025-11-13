@@ -198,4 +198,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [PyInstaller](https://pyinstaller.org/) for packaging
 - [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy) for AppImage creation
 - Fritzing for hardware documentation
-- Custom PCB design with KiCad
+- Custom PCB design with EasyEDA
