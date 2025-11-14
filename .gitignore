@@ -47,31 +47,40 @@ env/
 ehthumbs.db
 Thumbs.db
 
-# Application specific
+# Application specific - Build artifacts
 *.AppImage
+*.exe
 build/
 dist/
+configurator/src/build/
+configurator/src/dist/
 logs/
 temp/
 
-# Firmware build artifacts (PlatformIO)
-firmware/.pio/
-firmware/.pioenvs/
-firmware/.piolibdeps/
-firmware/.vscode/settings.json
-firmware/.vscode/c_cpp_properties.json
-firmware/.vscode/launch.json
-firmware/.vscode/ipch/
+# PyInstaller spec files (keep the Windows one, ignore Linux auto-generated)
+configurator/src/rc-gamepad-dongle.spec
+
+# Converted icon files (generated during build)
+configurator/assets/logo.ico
+
+# Hardware/Firmware build artifacts (PlatformIO)
+hardware/.pio/
+hardware/.pioenvs/
+hardware/.piolibdeps/
+hardware/.vscode/settings.json
+hardware/.vscode/c_cpp_properties.json
+hardware/.vscode/launch.json
+hardware/.vscode/ipch/
 
 # Keep tools directory but ignore downloaded binaries
-tools/*.AppImage
-tools/*.tar.gz
-tools/*.zip
-tools/linuxdeploy*
+configurator/tools/*.AppImage
+configurator/tools/*.tar.gz
+configurator/tools/*.zip
+configurator/tools/linuxdeploy*
 
 # Keep assets but ignore temporary files
-assets/*.tmp
-assets/*.backup
+configurator/assets/*.tmp
+configurator/assets/*.backup
 
 # Temporary and backup files
 *.tmp

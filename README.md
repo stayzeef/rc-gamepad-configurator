@@ -1,201 +1,142 @@
-# RC Gamepad Configurator
+# RC Gamepad Dongle
 
-A complete RC-to-USB joystick solution consisting of Arduino firmware and a modern GUI configurator. Convert your RC receiver signals into USB HID joystick inputs for flight simulators, games, and custom applications.
+Arduino-based USB HID adapter that converts RC receiver signals into gamepad inputs. Works with any device that supports USB HID joysticks.
 
-![RC Gamepad Configurator](assets/logo.png)
+![RC Gamepad Dongle](configurator/assets/logo.png)
 
-## 🚀 Complete Solution
+## Overview
 
-This project provides both the GUI configurator and Arduino firmware for RC-to-USB conversion:
+This project converts RC receiver output (IBUS, PPM, SBUS, etc.) into USB HID joystick signals. Includes both Arduino firmware and a desktop configurator for channel mapping.
 
-- **🖥️ GUI Configurator**: Modern PySide6 application for easy setup and channel mapping
-- **🔧 Arduino Firmware**: Full-featured dongle firmware for Arduino Pro Micro
-- **📱 Cross-Platform**: AppImage for Linux, source code for other platforms
-- **🎮 Gaming Ready**: USB HID joystick compatible with all games and simulators
+## Features
 
-## ⭐ Key Features
+- USB HID joystick (6 axes, 32 buttons, 2 hat switches)
+- Multiple RC protocols: IBUS, PPM, SBUS, CRSF, DSMX, DSM2, FPORT
+- Configurable channel mapping
+- Arduino Pro Micro based
+- Cross-platform configurator (Windows, Linux)
 
-### Protocols Supported
-- **✅ IBUS**: Fully tested and stable
-- **✅ PPM**: Tested and functional  
-- **⚠️ CRSF, SBUS, DSMX, DSM2, FPORT**: Implemented but untested (no hardware available)
+## Hardware
 
-### GUI Application
-- **Comprehensive Mapping**: 6 axes + 5 specialized controls + 32 buttons + 2 hat switches
-- **Channel Conflict Prevention**: Automatic detection and prevention of duplicate assignments
-- **Real-time Configuration**: Load and save configurations directly to/from the dongle
-- **File Management**: Save and load configurations as JSON files
-- **Modern Dark Theme**: Professional interface design
+### Components
 
-### Arduino Firmware
-- **Arduino Pro Micro**: ATmega32U4 with native USB HID capability
-- **Visual Feedback**: WS2812 LED status indicators
-- **Dual Mode**: Configuration mode and joystick mode
-- **EEPROM Storage**: Persistent configuration storage
-- **Serial Interface**: Real-time configuration via USB
+- Arduino Pro Micro (16MHz/5V)
+- 10kΩ resistor (mode select pullup)
+- Toggle switch (config/joystick mode)
+- WS2812 LED (optional, status indicator)
 
-## 🛠️ Hardware Requirements
+### Wiring
 
-### Option 1: Breadboard Build (Beginner-Friendly)
-**Components:**
-- **Arduino Pro Micro** (16MHz/5V, SparkFun or compatible)
-- **10kΩ Resistor** (for mode select pullup)
-- **Toggle Switch** (mode selection)
-- **WS2812 LED** (status indication, optional)
-- **Breadboard and jumper wires**
+![Breadboard Wiring](hardware/assets/ProMicroImplementation.fzpz_bb.png)
 
-**Assembly:**
-See the Fritzing diagram in `firmware/assets/ProMicroImplementation.fzpz_bb.png` for complete wiring.
+**Pins:**
+- Pin 0 (RX): RC receiver signal
+- Pin 3: Mode switch (HIGH=config, LOW=joystick)
+- Pin 5: WS2812 LED (optional)
+- GND: Ground
+- VCC: 5V power
 
-### Option 2: Custom PCB (Advanced)
-**Professional PCB design files included:**
-- **Gerber files**: `firmware/PCB/Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip`
-- **Schematic**: `firmware/PCB/SCH_RC-Gamepad-Dongle V0.1_2025-11-13.pdf`
-- **Bill of Materials**: `firmware/PCB/BOM_RC-Gamepad-Dongle V0.1_RC-Gamepad-Dongle V0.1_2025-11-13.xlsx`
-- **CAD files**: DXF format for mechanical integration
+### PCB Option
 
-### Pin Connections
-```
-Arduino Pro Micro:
-Pin 3  - Mode Select Switch (HIGH=Config, LOW=Joystick)
-Pin 5  - WS2812 LED Data (optional)
-Pin 0  - RX (RC Receiver Data Input)
-Pin 1  - TX (Not used for RC input)
-USB    - Configuration interface & HID output
-GND    - Ground connections
-VCC    - 5V power
-```
+Custom PCB available with hardware inverter for SBUS. Files in `hardware/PCB/`:
+- Gerber files: `Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip`
+- Schematic: `SCH_RC-Gamepad-Dongle V0.1_2025-11-13.pdf`
+- BOM: `BOM_RC-Gamepad-Dongle V0.1_RC-Gamepad-Dongle V0.1_2025-11-13.xlsx`
 
-## 📦 Quick Start
+## Quick Start
 
-### 1. Hardware Assembly
-Choose your build option:
+### 1. Flash Firmware
 
-**Breadboard Build:**
-- Follow the Fritzing diagram: `firmware/assets/ProMicroImplementation.fzpz_bb.png`
-- Components: Arduino Pro Micro + 10kΩ resistor + toggle switch + WS2812 LED
-- See [HARDWARE.md](HARDWARE.md) for detailed assembly instructions
-
-**Custom PCB:**
-- Order PCB using Gerber files in `firmware/PCB/`
-- Use included BOM for component sourcing
-- Professional solution with integrated hardware inverter for SBUS
-- Complete documentation in [HARDWARE.md](HARDWARE.md)
-
-### 2. Flash Firmware
 ```bash
-cd firmware/
+cd hardware/
 pio run --target upload
 ```
 
-### 3. Run Configurator
+### 2. Run Configurator
 
-**Linux (AppImage):**
+**Windows:** Run the `.exe`
+
+**Linux:**
 ```bash
 chmod +x RC_Gamepad_Configurator-x86_64.AppImage
 ./RC_Gamepad_Configurator-x86_64.AppImage
 ```
 
-**From Source:**
+**From source:**
 ```bash
+cd configurator
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python src/rc-gamepad-configurator.py
+python src/rc-gamepad-dongle.py
 ```
 
-### 4. Configure
-1. Set dongle to config mode (pin 3 HIGH)
-2. Select protocol in GUI
-3. Load current config from dongle
-4. Map channels to controls
-5. Save to dongle
-6. Switch to joystick mode (pin 3 LOW)
+### 3. Configure
 
-## 📋 Protocol Support Status
+1. Set pin 3 HIGH (config mode)
+2. Connect via USB
+3. Open configurator
+4. Select RC protocol
+5. Map channels to joystick controls
+6. Save to dongle
+7. Set pin 3 LOW (joystick mode)
 
-| Protocol | Status | Baud Rate | Testing Status |
-|----------|--------|-----------|----------------|
-| IBUS     | ✅ Stable | 115200 | ✅ Fully tested |
-| PPM      | ✅ Stable | N/A | ✅ Tested |
-| CRSF     | ⚠️ Implemented | 420000 | ⚠️ Untested* |
-| SBUS     | ⚠️ Implemented | 100000 | ⚠️ Untested* |
-| DSMX     | ⚠️ Implemented | 115200 | ⚠️ Untested* |
-| DSM2     | ⚠️ Implemented | 115200 | ⚠️ Untested* |
-| FPORT    | ⚠️ Implemented | 115200 | ⚠️ Untested* |
+## Protocol Support
 
-*\*Untested due to lack of hardware. Implementations are based on protocol specifications and may require refinement.*
+| Protocol | Status | Baud | Notes |
+|----------|--------|------|-------|
+| IBUS | ✅ Tested | 115200 | FlySky receivers |
+| PPM | ✅ Tested | N/A | 8-channel |
+| SBUS | ⚠️ Untested | 100000 | Needs hardware inverter |
+| CRSF | ⚠️ Untested | 420000 | Implemented per spec |
+| DSMX | ⚠️ Untested | 115200 | Spektrum |
+| DSM2 | ⚠️ Untested | 115200 | Spektrum |
+| FPORT | ⚠️ Untested | 115200 | FrSky |
 
-## 🔌 Hardware Connections
+**Note:** Untested protocols are implemented based on specifications. Testing contributions welcome.
 
-**⚠️ WARNING: Only connect ONE receiver at a time!**
+## Building
 
-- **IBUS/CRSF/PPM/DSM2/DSMX/FPORT**: Connect to RX pin (Pin 0)
-- **SBUS**: Connect to dedicated SBUS port (requires hardware inverter)
+### Configurator
 
-## 🏗️ Project Structure
-
-```
-├── README.md                    # Main documentation
-├── HARDWARE.md                  # Hardware assembly guide
-├── CHANGELOG.md                 # Version history  
-├── CONTRIBUTING.md              # Contribution guidelines
-├── LICENSE                      # MIT license
-├── src/                        # GUI application source
-│   ├── rc-gamepad-configurator.py
-│   └── rc-gamepad-configurator.spec
-├── firmware/                   # Arduino firmware (PlatformIO)
-│   ├── src/main.cpp           # Main firmware code
-│   ├── platformio.ini         # Build configuration
-│   ├── assets/                # Fritzing diagrams
-│   │   ├── ProMicroImplementation.fzpz_bb.png
-│   │   └── ProMicroImplementation.fzpz.fzz
-│   └── PCB/                   # Professional PCB design
-│       ├── Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip
-│       ├── SCH_RC-Gamepad-Dongle V0.1_2025-11-13.pdf
-│       └── BOM_RC-Gamepad-Dongle V0.1_RC-Gamepad-Dongle V0.1_2025-11-13.xlsx
-├── assets/                     # GUI assets and configurations
-├── scripts/                    # Build automation
-└── build/                      # Build outputs (AppImage, etc.)
+**Windows:**
+```powershell
+.\configurator\scripts\windows\build-exe.ps1
 ```
 
-## 🛠️ Development
-
-### Building GUI
+**Linux:**
 ```bash
-# Build AppImage
-./scripts/build-appimage.sh
-
-# Build with PyInstaller
-./scripts/build.sh
+./configurator/scripts/linux/build-appimage.sh
 ```
 
-### Building Firmware
+### Firmware
+
 ```bash
-cd firmware/
+cd hardware/
 pio run                    # Build
 pio run --target upload    # Flash
-pio device monitor         # Serial monitor
+pio device monitor         # Monitor
 ```
 
-## 🤝 Contributing
+## Project Structure
 
-1. Fork the repository
-2. Create a feature branch
-3. **Test on actual hardware** (especially for protocol implementations)
-4. Submit a pull request
+```
+RC-Gamepad-Dongle/
+├── configurator/          # Desktop GUI app
+│   ├── src/              # Python source
+│   ├── scripts/          # Build scripts
+│   ├── assets/           # Icons
+│   └── requirements.txt  # Dependencies
+└── hardware/             # Arduino firmware
+    ├── src/              # C++ source
+    ├── PCB/              # PCB files
+    └── assets/           # Schematics
+```
 
-**Protocol Testing Needed**: If you have CRSF, SBUS, DSM, or FPORT receivers, testing contributions would be greatly appreciated!
+## License
 
-## 📝 License
+MIT - see [LICENSE](LICENSE)
 
-MIT License - see [LICENSE](LICENSE) file for details.
+## Contributing
 
-## 🙏 Acknowledgments
-
-- Built with [PySide6](https://www.qt.io/qt-for-python) for the GUI
-- [PlatformIO](https://platformio.org/) for Arduino development
-- [PyInstaller](https://pyinstaller.org/) for packaging
-- [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy) for AppImage creation
-- Fritzing for hardware documentation
-- Custom PCB design with EasyEDA
+Pull requests welcome. Protocol testing especially appreciated for SBUS, CRSF, DSM, and FPORT receivers.

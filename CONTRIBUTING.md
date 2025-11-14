@@ -26,8 +26,8 @@ When reporting issues, please include:
 
 ### GUI Development
 ```bash
-git clone https://github.com/stayzeef/rc-gamepad-configurator.git
-cd rc-gamepad-configurator
+git clone https://github.com/stayzeef/RC-Gamepad-Dongle.git
+cd RC-Gamepad-Dongle/configurator
 
 # Setup Python environment
 python -m venv .venv
@@ -35,12 +35,12 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 # Run in development mode
-python src/rc-gamepad-configurator.py
+python src/rc-gamepad-dongle.py
 ```
 
 ### Firmware Development
 ```bash
-cd firmware/
+cd hardware/
 
 # Install PlatformIO if not already installed
 pip install platformio

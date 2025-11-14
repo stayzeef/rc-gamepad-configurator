@@ -1,6 +1,7 @@
 # RC Gamepad Configurator - Supports multiple RC protocols
 import sys
 import json
+import os
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QComboBox, QPushButton, QLabel, QTextEdit, QTabWidget, QScrollArea,
@@ -8,12 +9,24 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtSerialPort import QSerialPort, QSerialPortInfo
 from PySide6.QtCore import QIODevice, Slot, Qt
+from PySide6.QtGui import QIcon
 
 class ConfiguratorApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("RC Gamepad Configurator")
         self.setGeometry(100, 100, 600, 700)
+        
+        # Set window icon
+        icon_path = self.get_icon_path()
+        if icon_path and os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+            print(f"Window icon set to: {icon_path}")
+        else:
+            print(f"Warning: Icon not found. Searched path: {icon_path}")
+            print(f"Frozen: {getattr(sys, 'frozen', False)}")
+            if getattr(sys, 'frozen', False):
+                print(f"_MEIPASS: {getattr(sys, '_MEIPASS', 'NOT SET')}")
         
         # Main widget and layout
         self.central_widget = QWidget()
@@ -49,6 +62,25 @@ class ConfiguratorApp(QMainWindow):
         self.log("Select a protocol in the General tab to begin configuration.")
         self.log("NOTE: 'Load from Dongle' reads both mappings and protocol settings.")
 
+    def get_icon_path(self):
+        """Get the path to the application icon, works for both dev and PyInstaller builds."""
+        # Try multiple possible icon locations
+        possible_paths = [
+            # PyInstaller: bundled as data file (Windows/Linux)
+            os.path.join(getattr(sys, '_MEIPASS', ''), 'assets', 'logo_512.png') if getattr(sys, 'frozen', False) else None,
+            os.path.join(getattr(sys, '_MEIPASS', ''), 'assets', 'logo.png') if getattr(sys, 'frozen', False) else None,
+            # Development: running from src directory
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo_512.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo.png'),
+            # Linux AppImage: absolute path
+            '/usr/share/icons/hicolor/512x512/apps/rc-gamepad-dongle.png',
+        ]
+        
+        for path in possible_paths:
+            if path and os.path.exists(path):
+                return path
+        
+        return None
 
     # --- UI Initialization Functions ---
 

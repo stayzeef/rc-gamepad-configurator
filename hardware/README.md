@@ -1,4 +1,87 @@
-# Hardware Documentation
+# RC Gamepad Dongle Firmware
+
+Arduino firmware for the RC Gamepad Configurator project.
+
+## Hardware Assembly
+
+### Breadboard Build
+**Components:**
+- Arduino Pro Micro (16MHz/5V)
+- 10kΩ resistor (pullup for mode switch)
+- Toggle switch (mode selection)
+- WS2812 LED (optional, status indication)
+
+**Wiring Diagram:**
+See `assets/ProMicroImplementation.fzpz_bb.png` for complete Fritzing diagram.
+
+### Custom PCB
+**Professional PCB available:**
+- Gerber files: `PCB/Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip`
+- Schematic: `PCB/SCH_RC-Gamepad-Dongle V0.1_2025-11-13.pdf` 
+- BOM: `PCB/BOM_RC-Gamepad-Dongle V0.1_RC-Gamepad-Dongle V0.1_2025-11-13.xlsx`
+- Includes hardware SBUS inverter
+
+## Pin Configuration
+
+```
+Pin 3  - Mode Select (HIGH=Config, LOW=Joystick)
+Pin 5  - WS2812 LED Data (optional)
+Pin 0  - RX (RC Receiver Data Input) 
+Pin 1  - TX (Not used)
+USB    - Configuration & HID output
+```
+
+## Quick Start
+
+```bash
+cd hardware/
+pio run --target upload
+```
+
+## Protocol Support
+
+| Protocol | Status | Baud Rate | Testing |
+|----------|--------|-----------|----------|
+| IBUS     | ✅ Stable | 115200 | ✅ Tested |
+| PPM      | ✅ Stable | N/A | ✅ Tested |
+| CRSF     | ⚠️ Implemented | 420000 | ⚠️ Untested |
+| SBUS     | ⚠️ Implemented | 100000 | ⚠️ Untested |
+| DSMX/DSM2| ⚠️ Implemented | 115200 | ⚠️ Untested |
+| FPORT    | ⚠️ Implemented | 115200 | ⚠️ Untested |
+
+**Note**: Only IBUS and PPM have been tested due to hardware availability.
+
+## Supported Controls
+
+### Joystick Axes
+- **X, Y, Z Axes**: Standard 3D movement controls
+- **Rx, Ry, Rz Axes**: Rotational controls around X, Y, Z axes
+
+### Specialized Controls  
+- **Rudder**: Directional control (typically yaw)
+- **Throttle**: Power/speed control
+- **Accelerator**: Forward motion control
+- **Brake**: Stopping/reverse control  
+- **Steering**: Left/right directional control
+
+### Digital Controls
+- **32 Buttons**: Individual on/off switches
+- **2 Hat Switches**: 8-direction digital controls for menus/navigation
+
+All controls can be mapped to any RC channel (1-16) or disabled.
+
+## Build Requirements
+
+- [PlatformIO](https://platformio.org/)
+- Arduino Pro Micro or compatible ATmega32U4 board
+
+## Configuration
+
+Use the GUI configurator application in the parent directory to configure the firmware via serial interface.
+
+## License
+
+MIT License - see main project for details.# Hardware Documentation
 
 ## Build Options
 
@@ -12,7 +95,7 @@
 - Breadboard and jumper wires
 
 **Assembly Instructions:**
-1. Follow the Fritzing diagram: `firmware/assets/ProMicroImplementation.fzpz_bb.png`
+1. Follow the Fritzing diagram: `hardware/assets/ProMicroImplementation.fzpz_bb.png`
 2. Connect the toggle switch to Pin 3 with 10kΩ pullup resistor
 3. Connect WS2812 LED data pin to Pin 5 (optional)
 4. Connect RC receiver data to Pin 0 (RX)
@@ -30,7 +113,7 @@ Arduino Pro Micro Connections:
 
 ### Option 2: Custom PCB (Professional)
 
-**PCB Design Files (in `firmware/PCB/`):**
+**PCB Design Files (in `hardware/PCB/`):**
 - `Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip` - Manufacturing files
 - `SCH_RC-Gamepad-Dongle V0.1_2025-11-13.pdf` - Schematic diagram
 - `BOM_RC-Gamepad-Dongle V0.1_RC-Gamepad-Dongle V0.1_2025-11-13.xlsx` - Bill of materials
@@ -107,12 +190,12 @@ The WS2812 LED provides visual feedback:
 
 ## Files Reference
 
-### Fritzing Files (`firmware/assets/`)
+### Fritzing Files (`hardware/assets/`)
 - `ProMicroImplementation.fzpz.fzz` - Editable Fritzing project
 - `ProMicroImplementation.fzpz_bb.png` - Breadboard view
 - `ProMicroImplementation2.fzpz_bb.png` - Alternative view
 
-### PCB Files (`firmware/PCB/`)
+### PCB Files (`hardware/PCB/`)
 - Gerber files for manufacturing
 - Complete schematic documentation
 - Bill of materials with part numbers
