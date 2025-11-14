@@ -27,10 +27,11 @@ The project includes Arduino firmware for the dongle itself and a desktop config
 - **Toggle switch** (to switch between config and joystick modes)
 - **WS2812 LED** (optional, gives you visual status feedback)
 
-### Building It
+## Building Your Dongle
 
-You have two options: breadboard or PCB.
+You can build this project two ways: you can solder a frankenstein or build a custom PCB
 
+### Option 1: Frankenstein Build
 ![Breadboard Wiring](hardware/assets/ProMicroImplementation.fzpz_bb.png)
 
 **Pin Connections:**
@@ -41,7 +42,7 @@ You have two options: breadboard or PCB.
 - **GND**: Ground connection
 - **VCC**: 5V power
 
-### Custom PCB
+### Option 2: Custom PCB
 
 If you want a cleaner build, there's a custom PCB design with all the features built in, including a hardware inverter for SBUS receivers. All the files you need are in `hardware/PCB/`:
 - **[Gerber files](hardware/PCB/Gerber_RC-Gamepad-Dongle_V0.1_2025-11-13.zip)**: Ready to send to your PCB manufacturer
